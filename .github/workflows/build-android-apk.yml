@@ -12,36 +12,41 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
-      - name: Set up Java
-        uses: actions/setup-java@v4
+      - name: Set up Java 17
+        uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Set up Android
+        uses: android-actions/setup-android@v4
+
+      - name: Install Android 35
+        run: |
+          sdkmanager "platforms;android-35" "build-tools;35.0.0"
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v6
         with:
           gradle-version: '8.10.2'
 
-      - name: Find and build Seal Browser
+      - name: Build Seal Browser
         run: |
           set -e
 
           SETTINGS="$(find . -name settings.gradle -print -quit)"
 
           if [ -z "$SETTINGS" ]; then
-            echo "Could not find the Android project"
+            echo "Seal Browser project could not be found."
             find . -maxdepth 5 -print
             exit 1
           fi
 
           PROJECT_DIR="$(dirname "$SETTINGS")"
-          echo "Found Seal Browser at: $PROJECT_DIR"
+
+          echo "Project found at: $PROJECT_DIR"
 
           cd "$PROJECT_DIR"
 
@@ -50,14 +55,14 @@ jobs:
           APK="$(find app/build/outputs/apk/debug -name '*.apk' -print -quit)"
 
           if [ -z "$APK" ]; then
-            echo "APK wasn't created"
+            echo "APK was not created."
             exit 1
           fi
 
           cp "$APK" "$GITHUB_WORKSPACE/SealBrowser-Samsung.apk"
 
       - name: Upload APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: SealBrowser-Samsung-APK
           path: SealBrowser-Samsung.apk
