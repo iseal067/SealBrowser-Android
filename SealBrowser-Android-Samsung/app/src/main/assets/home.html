@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>New Tab</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#0b1220;color:#f7f9fc;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}body{display:flex;align-items:center;justify-content:center;padding:28px}.wrap{width:min(680px,100%)}.mark{width:42px;height:42px;border-radius:13px;background:#1473e6;display:grid;place-items:center;font-size:22px;font-weight:700;margin-bottom:22px}.title{font-size:34px;font-weight:700;letter-spacing:-1.2px;margin:0 0 6px}.sub{color:#95a3b8;margin:0 0 28px;font-size:15px}.search{display:flex;align-items:center;background:#151e2d;border:1px solid #263247;border-radius:18px;padding:5px}.search input{flex:1;background:transparent;border:0;outline:0;color:#fff;font-size:16px;padding:13px 15px}.search button{border:0;background:#1473e6;color:#fff;border-radius:13px;padding:12px 17px;font-size:15px}.links{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}.links a{display:block;text-decoration:none;color:#dce6f5;background:#121b29;border:1px solid #202c40;border-radius:16px;padding:17px 10px;text-align:center;font-size:14px}@media(max-width:520px){.links{grid-template-columns:repeat(2,1fr)}.title{font-size:30px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="mark">S</div>
+  <h1 class="title">Seal</h1>
+  <p class="sub" id="date"></p>
+  <form class="search" action="https://www.google.com/search" method="get">
+    <input type="hidden" name="hl" value="en"><input type="hidden" name="gl" value="gb">
+    <input name="q" aria-label="Search" placeholder="Search the web" autocomplete="off">
+    <button type="submit">Search</button>
+  </form>
+  <div class="links">
+    <a href="https://www.google.com/?hl=en">Google</a>
+    <a href="https://www.youtube.com/">YouTube</a>
+    <a href="https://www.roblox.com/">Roblox</a>
+    <a href="https://discord.com/app">Discord</a>
+  </div>
+</div>
+<script>document.getElementById('date').textContent=new Intl.DateTimeFormat('en-GB',{weekday:'long',day:'numeric',month:'long'}).format(new Date())</script>
+</body>
+</html>
