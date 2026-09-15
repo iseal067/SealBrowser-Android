@@ -20,12 +20,15 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Android
-        uses: android-actions/setup-android@v4
-
-      - name: Install Android 35
+      - name: Install Android SDK 35
         run: |
-          sdkmanager "platforms;android-35" "build-tools;35.0.0"
+          echo "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin" >> "$GITHUB_PATH"
+
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" \
+            "platforms;android-35" \
+            "build-tools;35.0.0"
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v6
@@ -39,23 +42,23 @@ jobs:
           SETTINGS="$(find . -name settings.gradle -print -quit)"
 
           if [ -z "$SETTINGS" ]; then
-            echo "Seal Browser project could not be found."
+            echo "Could not find settings.gradle"
             find . -maxdepth 5 -print
             exit 1
           fi
 
           PROJECT_DIR="$(dirname "$SETTINGS")"
 
-          echo "Project found at: $PROJECT_DIR"
+          echo "Found project at: $PROJECT_DIR"
 
           cd "$PROJECT_DIR"
 
-          gradle :app:assembleDebug --stacktrace
+          gradle --no-daemon :app:assembleDebug --stacktrace
 
           APK="$(find app/build/outputs/apk/debug -name '*.apk' -print -quit)"
 
           if [ -z "$APK" ]; then
-            echo "APK was not created."
+            echo "APK was not created"
             exit 1
           fi
 
